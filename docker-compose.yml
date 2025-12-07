@@ -1,0 +1,36 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: ononimka-postgres
+    environment:
+      POSTGRES_USER: ononimka
+      POSTGRES_PASSWORD: ononimka
+      POSTGRES_DB: ononimka
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - '5434:5432'
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U ononimka']
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: ononimka-app
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: postgresql://ononimka:ononimka@postgres:5432/ononimka
+      TELEGRAM_BOT_TOKEN: ${TELEGRAM_BOT_TOKEN}
+      ADMIN_USERNAME: ${ADMIN_USERNAME:-nur_ksydykov}
+      GROUP_CHAT_ID: ${GROUP_CHAT_ID:-}
+      NODE_ENV: ${NODE_ENV:-development}
+    command: sh -c "yarn prisma migrate deploy && yarn start:prod"
+
+volumes:
+  postgres_data:

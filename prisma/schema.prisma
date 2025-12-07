@@ -1,0 +1,91 @@
+generator client {
+  provider     = "prisma-client"
+  output       = "../generated/prisma"
+  moduleFormat = "cjs"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id               Int       @id @default(autoincrement())
+  telegramId       BigInt    @unique
+  username         String    @unique
+  usernameOriginal String
+  firstName        String
+  lastName         String
+  login            String    @unique
+  isAdmin          Boolean   @default(false)
+  isRegistered     Boolean   @default(true)
+  messageCount     Int       @default(0)
+  lastMessageDate  DateTime?
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
+
+  sentMessages     Message[] @relation("SentMessages")
+  receivedMessages Message[] @relation("ReceivedMessages")
+}
+
+model Message {
+  id          Int         @id @default(autoincrement())
+  type        MessageType
+  contentType ContentType
+  content     String?
+  fileId      String?
+  isAnonymous Boolean     @default(true)
+
+  senderId Int
+  sender   User @relation("SentMessages", fields: [senderId], references: [id])
+
+  receiverId Int?
+  receiver   User? @relation("ReceivedMessages", fields: [receiverId], references: [id])
+
+  parentId Int?
+  parent   Message?  @relation("Replies", fields: [parentId], references: [id])
+  replies  Message[] @relation("Replies")
+
+  telegramMsgId BigInt?
+
+  status       MessageStatus @default(DELIVERED)
+  rejectReason String?
+
+  createdAt DateTime @default(now())
+
+  @@index([senderId])
+  @@index([receiverId])
+  @@index([parentId])
+  @@index([status])
+}
+
+model ImportedUser {
+  id        Int     @id
+  login     String  @unique
+  firstName String
+  lastName  String
+  imported  Boolean @default(false)
+}
+
+enum MessageType {
+  PERSONAL
+  GROUP
+}
+
+enum ContentType {
+  TEXT
+  PHOTO
+  VIDEO
+  DOCUMENT
+  STICKER
+  VOICE
+  VIDEO_NOTE
+  ANIMATION
+}
+
+enum MessageStatus {
+  PENDING
+  APPROVED
+  REJECTED
+  EDIT_REQUESTED
+  DELIVERED
+}
