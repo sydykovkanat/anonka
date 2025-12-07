@@ -1,24 +1,29 @@
-FROM node:20-slim
-
-# Install OpenSSL for Prisma
-RUN apt-get update && apt-get install -y openssl && rm -rf /var/lib/apt/lists/*
+# Build stage
+FROM node:20-alpine AS builder
 
 WORKDIR /app
 
-# Copy package files first
-COPY package.json yarn.lock ./
-
-# Copy prisma schema before install (needed for postinstall generation)
+COPY package.json yarn.lock prisma.config.ts ./
 COPY prisma ./prisma/
 
 RUN yarn install --frozen-lockfile
 
-# Copy source files
 COPY . .
 
-# Regenerate Prisma Client for the correct platform
 RUN yarn prisma generate
-
 RUN yarn build
 
-CMD ["node", "dist/main.js"]
+# Production stage
+FROM node:20-alpine AS runner
+
+WORKDIR /app
+
+COPY --from=builder /app/dist ./dist
+COPY --from=builder /app/node_modules ./node_modules
+COPY --from=builder /app/package.json ./
+COPY --from=builder /app/prisma.config.ts ./
+COPY --from=builder /app/prisma ./prisma
+
+ENV NODE_ENV=production
+
+CMD ["node", "dist/src/main"]

@@ -5,7 +5,9 @@ import { PrismaClient } from '@prisma/generated';
 @Injectable()
 export class PrismaService extends PrismaClient {
   constructor() {
-    const connectionString = `postgresql://ononimka:ononimka@localhost:5434/ononimka?schema=public`;
+    const connectionString =
+      process.env.DATABASE_URL ||
+      'postgresql://ononimka:ononimka@localhost:5434/ononimka?schema=public';
 
     const adapter = new PrismaPg({ connectionString });
     super({ adapter });

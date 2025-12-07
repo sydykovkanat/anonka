@@ -29,8 +29,9 @@ services:
       TELEGRAM_BOT_TOKEN: ${TELEGRAM_BOT_TOKEN}
       ADMIN_USERNAME: ${ADMIN_USERNAME:-nur_ksydykov}
       GROUP_CHAT_ID: ${GROUP_CHAT_ID:-}
+      GROUP_CHAT_LINK: ${GROUP_CHAT_LINK:-}
       NODE_ENV: ${NODE_ENV:-development}
-    command: sh -c "yarn prisma migrate deploy && yarn start:prod"
+    command: sh -c "yarn prisma migrate deploy && node dist/src/main"
 
 volumes:
   postgres_data:

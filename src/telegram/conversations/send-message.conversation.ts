@@ -74,13 +74,26 @@ export class SendMessageConversation {
       {
         reply_markup: {
           inline_keyboard: [
-            [{ text: '❌ Отмена', callback_data: 'back_to_menu' }],
+            [{ text: '❌ Отмена', callback_data: 'cancel_conversation' }],
           ],
         },
       },
     );
 
-    const usernameResponse = await conversation.waitFor('message:text');
+    const usernameResponse = await conversation.wait();
+
+    if (usernameResponse.callbackQuery?.data === 'cancel_conversation') {
+      await usernameResponse.answerCallbackQuery();
+      await this.menuService.showMainMenu(ctx);
+      return;
+    }
+
+    if (!usernameResponse.message?.text) {
+      await ctx.reply('❌ Пожалуйста, введите username текстом.');
+      await this.menuService.showMainMenu(ctx);
+      return;
+    }
+
     const recipientUsername = usernameResponse.message.text.trim();
 
     if (!this.isNurUsername(recipientUsername.replace('@', ''))) {

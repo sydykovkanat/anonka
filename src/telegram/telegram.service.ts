@@ -180,6 +180,24 @@ export class TelegramService implements OnModuleInit {
   }
 
   private setupHandlers() {
+    // Auto-delete "joined the group" service messages
+    this.bot.on('message:new_chat_members', async (ctx) => {
+      try {
+        await ctx.deleteMessage();
+      } catch (error) {
+        this.logger.warn('Failed to delete join message:', error);
+      }
+    });
+
+    // Auto-delete "left the group" service messages
+    this.bot.on('message:left_chat_member', async (ctx) => {
+      try {
+        await ctx.deleteMessage();
+      } catch (error) {
+        this.logger.warn('Failed to delete leave message:', error);
+      }
+    });
+
     // Commands
     this.bot.command('start', async (ctx) => {
       const payload = ctx.match;
