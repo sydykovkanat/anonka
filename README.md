@@ -1,98 +1,273 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+# 🤖 Ononimka - Telegram Anonymous Messaging Bot
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+Telegram бот для анонимных сообщений с модерацией, управлением пользователями и поддержкой различных типов контента.
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+## 📋 Возможности
 
-## Description
+- ✅ Анонимные и идентифицированные сообщения (личные/групповые)
+- ✅ Модерация сообщений с системой одобрения
+- ✅ Поддержка различных типов контента: текст, фото, видео, документы, стикеры, голосовые, видео-заметки, анимации
+- ✅ Управление пользователями и администраторами
+- ✅ Система ответов на сообщения (threading)
+- ✅ Ограничение количества сообщений в день
+- ✅ Импорт пользователей
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+## 🛠 Технологический стек
 
-## Project setup
+- **Framework**: NestJS
+- **Language**: TypeScript
+- **Database**: PostgreSQL
+- **ORM**: Prisma
+- **Telegram Bot**: Grammy
+- **Containerization**: Docker + Docker Compose
+- **CI/CD**: GitHub Actions
+
+## 🚀 Быстрый старт
+
+### Локальная разработка
+
+1. **Клонируйте репозиторий**
+   ```bash
+   git clone https://github.com/your-username/ononimka.git
+   cd ononimka
+   ```
+
+2. **Установите зависимости**
+   ```bash
+   yarn install
+   ```
+
+3. **Настройте переменные окружения**
+   ```bash
+   cp .env.example .env
+   # Отредактируйте .env и добавьте ваш TELEGRAM_BOT_TOKEN
+   ```
+
+4. **Запустите PostgreSQL**
+   ```bash
+   docker-compose up -d postgres
+   ```
+
+5. **Запустите миграции**
+   ```bash
+   yarn prisma migrate deploy
+   ```
+
+6. **Запустите приложение**
+   ```bash
+   yarn start:dev
+   ```
+
+### Развертывание на VPS с CI/CD
+
+**📖 Полная инструкция:** [DEPLOYMENT.md](DEPLOYMENT.md)
+
+**⚡ Быстрая шпаргалка:** [VPS_SETUP.md](VPS_SETUP.md)
+
+#### Краткая инструкция:
+
+1. **На VPS**: Запустите скрипт установки
+   ```bash
+   curl -o vps-commands.sh https://raw.githubusercontent.com/your-username/ononimka/main/vps-commands.sh
+   bash vps-commands.sh
+   ```
+
+2. **На VPS**: Создайте `.env` файл в `/opt/ononimka/`
+
+3. **В GitHub**: Настройте 9 Secrets (см. [VPS_SETUP.md](VPS_SETUP.md))
+
+4. **На локальной машине**: Push в main ветку
+   ```bash
+   git push origin main
+   ```
+
+5. **Готово!** GitHub Actions автоматически развернет бота на VPS
+
+## 📦 Доступные команды
 
 ```bash
-$ yarn install
+# Разработка
+yarn start              # Запуск приложения
+yarn start:dev          # Режим watch (авто-перезагрузка)
+yarn start:debug        # Debug режим
+
+# Production
+yarn build              # Сборка приложения
+yarn start:prod         # Запуск production версии
+
+# Тестирование
+yarn test               # Unit тесты
+yarn test:e2e           # E2E тесты
+yarn test:cov           # Покрытие тестами
+
+# База данных
+yarn prisma migrate dev    # Создать миграцию
+yarn prisma migrate deploy # Применить миграции
+yarn prisma generate       # Сгенерировать Prisma Client
+yarn prisma studio         # Открыть Prisma Studio
+
+# Качество кода
+yarn lint               # ESLint проверка
+yarn format             # Prettier форматирование
 ```
 
-## Compile and run the project
+## 🗂 Структура проекта
+
+```
+ononimka/
+├── .github/
+│   └── workflows/
+│       └── deploy.yml           # GitHub Actions CI/CD
+├── prisma/
+│   └── schema.prisma            # Схема БД
+├── src/
+│   ├── config/                  # Конфигурация приложения
+│   ├── telegram/                # Telegram бот логика
+│   ├── user/                    # Модуль пользователей
+│   ├── message/                 # Модуль сообщений
+│   ├── import/                  # Импорт пользователей
+│   ├── prisma/                  # Prisma сервис
+│   └── main.ts                  # Входная точка
+├── docker-compose.yml           # Dev конфигурация
+├── docker-compose.prod.yml      # Production конфигурация
+├── Dockerfile                   # Docker образ
+├── .env.example                 # Пример переменных окружения
+├── .env.production.example      # Пример production переменных
+├── DEPLOYMENT.md                # Полная инструкция по развертыванию
+├── VPS_SETUP.md                 # Быстрая шпаргалка
+└── vps-commands.sh              # Скрипт установки на VPS
+```
+
+## 🔧 Переменные окружения
+
+```env
+# База данных
+DATABASE_URL=postgresql://user:password@localhost:5434/ononimka
+
+# Telegram
+TELEGRAM_BOT_TOKEN=your_bot_token_here
+
+# Администрирование
+ADMIN_USERNAME=your_admin_username
+GROUP_CHAT_ID=your_group_chat_id
+GROUP_CHAT_LINK=your_group_chat_link
+
+# Настройки приложения
+NODE_ENV=development
+PORT=3000
+MODERATION=false
+MAX_MESSAGES_PER_DAY=100
+```
+
+## 🐳 Docker
+
+### Разработка
+```bash
+docker-compose up -d
+```
+
+### Production
+```bash
+docker compose -f docker-compose.prod.yml up -d
+```
+
+## 📊 Операционные команды на VPS
 
 ```bash
-# development
-$ yarn run start
+# Статус
+docker compose -f docker-compose.prod.yml ps
 
-# watch mode
-$ yarn run start:dev
+# Логи
+docker compose -f docker-compose.prod.yml logs -f app
 
-# production mode
-$ yarn run start:prod
+# Перезапуск
+docker compose -f docker-compose.prod.yml restart app
+
+# Backup БД
+docker compose -f docker-compose.prod.yml exec postgres \
+  pg_dump -U ononimka ononimka > backup_$(date +%Y%m%d).sql
 ```
 
-## Run tests
+## 🔄 CI/CD Workflow
+
+```
+git push origin main
+    ↓
+GitHub Actions
+    ↓
+Build Docker Image
+    ↓
+Push to GitHub Container Registry
+    ↓
+SSH to VPS
+    ↓
+Pull & Deploy
+    ↓
+✅ Bot Updated!
+```
+
+## 📝 База данных
+
+### Модели
+
+- **User**: Пользователи Telegram
+- **Message**: Сообщения с модерацией
+- **ImportedUser**: Предзагруженные пользователи
+
+### Миграции
 
 ```bash
-# unit tests
-$ yarn run test
+# Создать миграцию
+yarn prisma migrate dev --name migration_name
 
-# e2e tests
-$ yarn run test:e2e
-
-# test coverage
-$ yarn run test:cov
+# Применить на production
+yarn prisma migrate deploy
 ```
 
-## Deployment
+## 🛡 Безопасность
 
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
+- Все секреты хранятся в GitHub Secrets
+- `.env` файлы не коммитятся в git
+- PostgreSQL изолирован в Docker сети
+- Firewall настроен на VPS
+- Автоматические обновления через CI/CD
 
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
+## 📈 Мониторинг
 
+### Логи
 ```bash
-$ yarn install -g @nestjs/mau
-$ mau deploy
+docker compose -f docker-compose.prod.yml logs -f app
 ```
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+### Ресурсы
+```bash
+docker stats ononimka-app ononimka-postgres
+```
 
-## Resources
+### Дисковое пространство
+```bash
+docker system df
+```
 
-Check out a few resources that may come in handy when working with NestJS:
+## 🔧 Troubleshooting
 
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
+См. раздел Troubleshooting в [DEPLOYMENT.md](DEPLOYMENT.md)
 
-## Support
+## 📄 Лицензия
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+MIT
 
-## Stay in touch
+## 👨‍💻 Автор
 
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+Nur Sydykov (@nur_ksydykov)
 
-## License
+---
 
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+**📖 Документация:**
+- [DEPLOYMENT.md](DEPLOYMENT.md) - Полная инструкция по развертыванию
+- [VPS_SETUP.md](VPS_SETUP.md) - Быстрая шпаргалка
+
+**🚀 Развертывание:**
+```bash
+git push origin main  # И все происходит автоматически!
+```

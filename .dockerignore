@@ -2,3 +2,35 @@ node_modules
 dist
 .git
 *.log
+
+# Environment files
+.env
+.env.*
+!.env.example
+
+# CI/CD and workflows
+.github
+.claude
+
+# Documentation
+README.md
+*.md
+!package.json
+
+# Docker files
+docker-compose.yml
+docker-compose.prod.yml
+
+# IDE and editor configs
+.vscode
+.idea
+*.swp
+*.swo
+
+# Testing and coverage
+coverage
+.nyc_output
+
+# OS files
+.DS_Store
+Thumbs.db
