@@ -177,6 +177,14 @@ export class ReplyMessageConversation {
       return;
     }
 
+    // Проверяем тип сообщения
+    const validation = this.contentService.validateMessageType(msg);
+    if (!validation.isValid) {
+      await ctx.reply(validation.errorMessage!);
+      await this.menuService.showMainMenu(ctx);
+      return;
+    }
+
     const { contentType, content, fileId } =
       this.contentService.extractMessageContent(msg);
 
@@ -348,6 +356,14 @@ export class ReplyMessageConversation {
 
     if (!msg) {
       await ctx.reply('❌ Не удалось получить сообщение.');
+      await this.menuService.showMainMenu(ctx);
+      return;
+    }
+
+    // Проверяем тип сообщения
+    const validation = this.contentService.validateMessageType(msg);
+    if (!validation.isValid) {
+      await ctx.reply(validation.errorMessage!);
       await this.menuService.showMainMenu(ctx);
       return;
     }

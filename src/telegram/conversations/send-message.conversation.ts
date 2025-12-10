@@ -136,7 +136,7 @@ export class SendMessageConversation {
 
     await ctx.reply(
       `📨 Получатель: ${importedRecipient.firstName} ${importedRecipient.lastName}\n\n` +
-        'Отправьте ваше сообщение (текст, фото, видео, документ, стикер, голосовое):',
+        'Отправьте ваше сообщение (текст, фото, видео, документ, голосовое):',
     );
 
     const messageResponse = await conversation.wait();
@@ -144,6 +144,14 @@ export class SendMessageConversation {
 
     if (!msg) {
       await ctx.reply('❌ Не удалось получить сообщение.');
+      await this.menuService.showMainMenu(ctx);
+      return;
+    }
+
+    // Проверяем тип сообщения
+    const validation = this.contentService.validateMessageType(msg);
+    if (!validation.isValid) {
+      await ctx.reply(validation.errorMessage!);
       await this.menuService.showMainMenu(ctx);
       return;
     }

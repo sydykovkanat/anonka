@@ -37,6 +37,22 @@ export class TelegramContentService {
 
   constructor(private userService: UserService) {}
 
+  validateMessageType(msg: Message): { isValid: boolean; errorMessage?: string } {
+    if (msg.sticker) {
+      return {
+        isValid: false,
+        errorMessage: '❌ Отправка стикеров запрещена. Пожалуйста, отправьте текст, фото, видео, документ или голосовое сообщение.',
+      };
+    }
+    if (msg.animation) {
+      return {
+        isValid: false,
+        errorMessage: '❌ Отправка GIF запрещена. Пожалуйста, отправьте текст, фото, видео, документ или голосовое сообщение.',
+      };
+    }
+    return { isValid: true };
+  }
+
   extractMessageContent(msg: Message): ExtractedContent {
     if (msg.text) {
       return {
