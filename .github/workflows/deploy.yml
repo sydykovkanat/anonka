@@ -114,8 +114,8 @@ jobs:
             # Pull latest images
             docker compose -f docker-compose.prod.yml pull
 
-            # Stop and remove old containers
-            docker compose -f docker-compose.prod.yml down
+            # Force remove any existing containers with these names
+            docker rm -f ononimka-app ononimka-postgres 2>/dev/null || true
 
             # Start all containers
             docker compose -f docker-compose.prod.yml up -d
