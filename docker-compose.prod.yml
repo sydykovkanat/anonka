@@ -18,10 +18,10 @@ services:
       retries: 5
       start_period: 10s
     logging:
-      driver: "json-file"
+      driver: 'json-file'
       options:
-        max-size: "10m"
-        max-file: "3"
+        max-size: '10m'
+        max-file: '3'
 
   app:
     image: ghcr.io/${GITHUB_REPOSITORY_OWNER}/ononimka:${IMAGE_TAG:-latest}
@@ -44,10 +44,10 @@ services:
     networks:
       - ononimka-network
     logging:
-      driver: "json-file"
+      driver: 'json-file'
       options:
-        max-size: "10m"
-        max-file: "3"
+        max-size: '10m'
+        max-file: '3'
 
 volumes:
   postgres_data:

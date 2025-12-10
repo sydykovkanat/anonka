@@ -180,7 +180,6 @@ export class TelegramService implements OnModuleInit {
   }
 
   private setupHandlers() {
-    // Auto-delete "joined the group" service messages
     this.bot.on('message:new_chat_members', async (ctx) => {
       try {
         await ctx.deleteMessage();
