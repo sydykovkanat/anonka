@@ -24,7 +24,7 @@ services:
         max-file: '3'
 
   app:
-    image: ghcr.io/${GITHUB_REPOSITORY_OWNER}/ononimka:${IMAGE_TAG:-latest}
+    image: ghcr.io/${GITHUB_REPOSITORY_OWNER}/anonka:${IMAGE_TAG:-latest}
     container_name: ononimka-app
     restart: unless-stopped
     depends_on:
